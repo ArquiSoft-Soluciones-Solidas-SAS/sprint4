@@ -1,0 +1,264 @@
+# ***************** Universidad de los Andes ***********************
+# ****** Departamento de Ingeniería de Sistemas y Computación ******
+# ********** Arquitectura y diseño de Software - ISIS2503 **********
+#
+# Infraestructura para laboratorio de microservicios con Django
+# Elementos a desplegar:
+# 1. Firewalls:
+#    - msd-api-gateway
+#    - msd-services-apps
+#    - msd-services-apps-web
+#    - msd-service-sqldb
+#    - msd-service-mongodb
+# 2. Instancias MVs:
+#    - msd-kong-instance
+#    - msd-facturacion-db (postgreSQL instalado y configurado)
+#    - msd-facturacion-ms (Servicio de variables descargado)
+#    - msd-instituciones-db (mongodb instalado y configurado)
+#    - msd-instituciones-ms (Servicio de instituciones instalado y configurado)
+
+resources:
+# Firewall rules
+- name: msd-api-gateway
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceRanges: 
+    - 0.0.0.0/0
+    targetTags:
+    - msd-api-gateway
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 8000
+- name: msd-services-apps
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceTags: 
+    - msd-api-gateway
+    targetTags:
+    - msd-services-firewall
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 8080
+- name: msd-services-apps-web
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceRanges: 
+    - 0.0.0.0/0
+    targetTags:
+    - msd-services-firewall
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 8080
+- name: msd-service-sqldb
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceTags: 
+    - msd-services-firewall
+    targetTags:
+    - msd-service-sqldb
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 5432
+
+# Firewall rules
+- name: msd-service-nosqldb
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceTags: 
+    - msd-services-firewall
+    targetTags:
+    - msd-service-mongodb
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 27017
+
+# Kong instance
+- name: msd-kong-instance
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.81
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-api-gateway
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo mkdir /home/labs
+          cd /home/labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/sprint4.git
+          cd sprint4
+          docker network create kong-net
+          docker run -d --name kong --network=kong-net --restart=always \
+          -v "$(pwd):/kong/declarative/" -e "KONG_DATABASE=off" \
+          -e "KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yaml" \
+          -p 8000:8000 kong/kong-gateway
+
+# Database instances
+- name: msd-facturacion-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.82
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-sqldb
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d -e POSTGRES_USER=microservicios_user -e POSTGRES_DB=facturacion_service -e POSTGRES_PASSWORD=password -p 5432:5432 --name facturacion_service postgres
+
+- name: msd-instituciones-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.83
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-nosqldb
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d --name instituciones-service -p 27017:27017 \
+                            -e MONGO_INITDB_ROOT_USERNAME=microservicios_user \
+                            -e MONGO_INITDB_ROOT_PASSWORD=password \
+                            mongodb/mongodb-community-server
+
+# Service instances
+- name: msd-facturacion-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.84
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+          sudo mkdir /home/labs
+          cd /home/labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/facturacion-service.git
+          cd facturacion-service
+          sudo pip3 install -r requirements.txt
+
+- name: msd-instituciones-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.85
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+          sudo mkdir /labs
+          cd /labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/instituciones-service.git
+          cd instituciones-service
+          sudo pip3 install -r requirements.txt
+
+
+
+
+
