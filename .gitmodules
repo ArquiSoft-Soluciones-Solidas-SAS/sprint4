@@ -1,0 +1,21 @@
+[submodule "instituciones-service"]
+	path = instituciones-service
+	url = https://github.com/ArquiSoft-Soluciones-Solidas-SAS/instituciones-service.git
+[submodule "cronogramas-service"]
+	path = cronogramas-service
+	url = https://github.com/ArquiSoft-Soluciones-Solidas-SAS/cronogramas-service.git
+[submodule "estudiantes-service"]
+	path = estudiantes-service
+	url = https://github.com/ArquiSoft-Soluciones-Solidas-SAS/estudiantes-service.git
+[submodule "facturacion-service"]
+	path = facturacion-service
+	url = https://github.com/ArquiSoft-Soluciones-Solidas-SAS/facturacion-service.git
+[submodule "usuarios-service"]
+	path = usuarios-service
+	url = https://github.com/ArquiSoft-Soluciones-Solidas-SAS/usuarios-service.git
+[submodule "batch-service"]
+	path = batch-service
+	url = https://github.com/ArquiSoft-Soluciones-Solidas-SAS/batch-service.git
+[submodule "reportes-service"]
+	path = reportes-service
+	url = https://github.com/ArquiSoft-Soluciones-Solidas-SAS/reportes-service.git

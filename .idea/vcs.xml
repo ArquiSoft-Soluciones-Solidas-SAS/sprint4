@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/batch-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cronogramas-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/estudiantes-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/facturacion-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/instituciones-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/reportes-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/usuarios-service" vcs="Git" />
+  </component>
+</project>
