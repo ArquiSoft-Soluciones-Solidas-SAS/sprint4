@@ -18,14 +18,83 @@ services:
         paths:
           - /instituciones
         strip_path: false
+  - name: cronogramas_service
+    host: cronogramas_upstream
+    protocol: http
+    routes:
+      - name: cronogramas
+        paths:
+          - /cronogramas
+        strip_path: false
+
+  - name: estudiantes_service
+    host: estudiantes_upstream
+    protocol: http
+    routes:
+      - name: estudiantes
+        paths:
+          - /estudiantes
+        strip_path: false
+
+  - name: usuarios_service
+    host: usuarios_upstream
+    protocol: http
+    routes:
+      - name: usuarios
+        paths:
+          - /usuarios
+        strip_path: false
+
+  - name: batch_service
+    host: batch_upstream
+    protocol: http
+    routes:
+      - name: batch
+        paths:
+          - /batch
+        strip_path: false
+
+  - name: reportes_service
+    host: reportes_upstream
+    protocol: http
+    routes:
+      - name: reportes
+        paths:
+          - /reportes
+        strip_path: false
     
 upstreams:
   - name: facturacion_upstream
     targets:
-      - target: 10.128.0.84:8080
+      - target: 10.128.0.88:8080
         weight: 100
 
   - name: instituciones_upstream
     targets:
-      - target: 10.128.0.85:8080
+      - target: 10.128.0.89:8080
+        weight: 100
+  
+  - name: cronogramas_upstream
+    targets:
+      - target: 10.128.0.90:8080
+        weight: 100
+  
+  - name: estudiantes_upstream
+    targets:
+      - target: 10.128.0.91:8080
+        weight: 100
+  
+  - name: usuarios_upstream
+    targets:
+      - target: 10.128.0.92:8080
+        weight: 100
+  
+  - name: batch_upstream
+    targets:
+      - target: 10.128.0.93:8080
+        weight: 100
+
+  - name: reportes_upstream
+    targets:
+      - target: 10.128.0.94:8080
         weight: 100

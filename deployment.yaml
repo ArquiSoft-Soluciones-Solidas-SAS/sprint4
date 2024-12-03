@@ -13,10 +13,18 @@
 # 2. Instancias MVs:
 #    - msd-kong-instance
 #    - msd-facturacion-db (postgreSQL instalado y configurado)
-#    - msd-facturacion-ms (Servicio de variables descargado)
 #    - msd-instituciones-db (mongodb instalado y configurado)
+#    - msd-cronogramas-db
+#    - msd-estudiantes-db
+#    - msd-usuarios-db
+#    - msd-reportes-query-db
+#    - msd-facturacion-ms (Servicio de variables descargado)
 #    - msd-instituciones-ms (Servicio de instituciones instalado y configurado)
-
+#    - msd-cronogramas-ms
+#    - msd-estudiantes-ms
+#    - msd-usuarios-ms
+#    - msd-batch-ms
+#    - msd-reportes-ms
 resources:
 # Firewall rules
 - name: msd-api-gateway
@@ -189,6 +197,130 @@ resources:
                             -e MONGO_INITDB_ROOT_PASSWORD=password \
                             mongodb/mongodb-community-server
 
+- name: msd-cronogramas-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.84
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-nosqldb
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d --name cronogramas-service -p 27017:27017 \
+                            -e MONGO_INITDB_ROOT_USERNAME=microservicios_user \
+                            -e MONGO_INITDB_ROOT_PASSWORD=password \
+                            mongodb/mongodb-community-server
+
+- name: msd-estudiantes-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.85
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-nosqldb
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d --name estudiantes-service -p 27017:27017 \
+                            -e MONGO_INITDB_ROOT_USERNAME=microservicios_user \
+                            -e MONGO_INITDB_ROOT_PASSWORD=password \
+                            mongodb/mongodb-community-server
+
+- name: msd-usuarios-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.86
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-nosqldb
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d --name usuarios-service -p 27017:27017 \
+                            -e MONGO_INITDB_ROOT_USERNAME=microservicios_user \
+                            -e MONGO_INITDB_ROOT_PASSWORD=password \
+                            mongodb/mongodb-community-server
+
+- name: msd-reportes-query-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.87
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-nosqldb
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d --name reportes-query-service -p 27017:27017 \
+                            -e MONGO_INITDB_ROOT_USERNAME=microservicios_user \
+                            -e MONGO_INITDB_ROOT_PASSWORD=password \
+                            mongodb/mongodb-community-server
+
 # Service instances
 - name: msd-facturacion-ms
   type: compute.v1.instance
@@ -204,7 +336,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.84
+      networkIP: 10.128.0.88
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -223,6 +355,19 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/facturacion-service.git
           cd facturacion-service
           sudo pip install -r requirements.txt
+          cd ofipensiones
+          python3 manage.py makemigrations
+          python3 manage.py migrate
+          python3 -c "
+          import django
+          django.setup()
+
+          # Importa el método que deseas ejecutar
+          from institucionesService.factory import crear_instituciones_con_cursos
+
+          # Llama al método para crear las instituciones con cursos
+          crear_instituciones_con_cursos()
+          "
 
 - name: msd-instituciones-ms
   type: compute.v1.instance
@@ -238,7 +383,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.85
+      networkIP: 10.128.0.89
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -258,7 +403,180 @@ resources:
           cd instituciones-service
           sudo pip install -r requirements.txt
 
+- name: msd-cronogramas-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.90
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+          sudo mkdir /labs
+          cd /labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/cronogramas-service.git
+          cd cronogramas-service
+          sudo pip install -r requirements.txt
 
+- name: msd-estudiantes-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.91
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+          sudo mkdir /labs
+          cd /labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/estudiantes-service.git
+          cd estudiantes-service
+          sudo pip install -r requirements.txt
 
+- name: msd-usuarios-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.92
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+          sudo mkdir /labs
+          cd /labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/usuarios-service.git
+          cd usuarios-service
+          sudo pip install -r requirements.txt
 
+- name: msd-batch-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.93
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install software-properties-common -y
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt-get update
+          sudo apt install python3.12 -y
+          sudo curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
+          sudo mkdir /home/labs
+          cd /home/labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/batch-service.git
+          cd batch-service
+          sudo python3.12 -m pip install -r requirements.txt
 
+- name: msd-reportes-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.94
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install software-properties-common -y
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt-get update
+          sudo apt install python3.12 -y
+          sudo curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
+          sudo mkdir /home/labs
+          cd /home/labs
+          sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/reportes-service.git
+          cd reportes-service
+          sudo python3.12 -m pip install -r requirements.txt
