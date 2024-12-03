@@ -325,8 +325,8 @@ resources:
 - name: msd-facturacion-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-b
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -372,8 +372,8 @@ resources:
 - name: msd-instituciones-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-b
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -406,8 +406,8 @@ resources:
 - name: msd-cronogramas-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-b
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -440,8 +440,8 @@ resources:
 - name: msd-estudiantes-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-b
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -474,8 +474,8 @@ resources:
 - name: msd-usuarios-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-b
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -508,8 +508,8 @@ resources:
 - name: msd-batch-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-b
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -546,8 +546,8 @@ resources:
 - name: msd-reportes-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-b
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
