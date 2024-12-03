@@ -326,7 +326,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -373,7 +373,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -407,7 +407,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -441,7 +441,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -475,7 +475,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -509,7 +509,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -547,7 +547,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-a/machineTypes/n1-standard-1
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
       type: PERSISTENT
