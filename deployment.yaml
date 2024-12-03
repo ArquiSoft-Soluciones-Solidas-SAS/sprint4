@@ -325,7 +325,7 @@ resources:
 - name: msd-facturacion-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-a
+    zone: us-central1-b
     machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
@@ -372,7 +372,7 @@ resources:
 - name: msd-instituciones-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-a
+    zone: us-central1-b
     machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
@@ -406,7 +406,7 @@ resources:
 - name: msd-cronogramas-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-a
+    zone: us-central1-b
     machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
@@ -440,7 +440,7 @@ resources:
 - name: msd-estudiantes-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-a
+    zone: us-central1-b
     machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
@@ -474,7 +474,7 @@ resources:
 - name: msd-usuarios-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-a
+    zone: us-central1-b
     machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
@@ -508,7 +508,7 @@ resources:
 - name: msd-batch-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-a
+    zone: us-central1-b
     machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
@@ -546,7 +546,7 @@ resources:
 - name: msd-reportes-ms
   type: compute.v1.instance
   properties:
-    zone: us-central1-a
+    zone: us-central1-b
     machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-central1-b/machineTypes/n1-standard-1
     disks:
     - deviceName: boot
