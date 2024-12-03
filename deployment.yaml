@@ -336,7 +336,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.88
+      networkIP: 10.142.0.5
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -383,7 +383,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.89
+      networkIP: 10.142.0.6
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -417,7 +417,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.90
+      networkIP: 10.142.0.7
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -451,7 +451,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.91
+      networkIP: 10.142.0.8
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -485,7 +485,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.92
+      networkIP: 10.142.0.9
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -519,7 +519,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.93
+      networkIP: 10.142.0.10
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
@@ -557,7 +557,7 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
-      networkIP: 10.128.0.94
+      networkIP: 10.142.0.11
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
