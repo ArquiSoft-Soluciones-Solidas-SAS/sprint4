@@ -10,7 +10,8 @@
 #    - msd-services-apps-web
 #    - msd-service-sqldb
 #    - msd-service-mongodb
-# 2. Instancias MVs:
+#    - firewall-message-rabbit
+# 2. Instancias MVs (bases de datos):
 #    - msd-kong-instance
 #    - msd-facturacion-db (postgreSQL instalado y configurado)
 #    - msd-instituciones-db (mongodb instalado y configurado)
@@ -18,6 +19,7 @@
 #    - msd-estudiantes-db
 #    - msd-usuarios-db
 #    - msd-reportes-query-db
+# 3. Instancias MVs (servicios):
 #    - msd-facturacion-ms (Servicio de variables descargado)
 #    - msd-instituciones-ms (Servicio de instituciones instalado y configurado)
 #    - msd-cronogramas-ms
@@ -25,6 +27,7 @@
 #    - msd-usuarios-ms
 #    - msd-batch-ms
 #    - msd-reportes-ms
+#    - msd-rabbit-instance (mensajería para CQRS)
 resources:
 # Firewall rules
 - name: msd-api-gateway
@@ -99,6 +102,23 @@ resources:
     - IPProtocol: TCP
       ports: 
       - 27017
+
+# Firewall rules
+- name: firewall-message-rabbit
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceTags: 
+    - msd-services-firewall
+    targetTags:
+    - rabbit-instance
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 5672
+
 
 # Kong instance
 - name: msd-kong-instance
@@ -355,19 +375,11 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/facturacion-service.git
           cd facturacion-service
           sudo pip install -r requirements.txt
+          sudo pip install django-cqrs
           cd ofipensiones
           python3 manage.py makemigrations
           python3 manage.py migrate
-          python3 -c "
-          import django
-          django.setup()
 
-          # Importa el método que deseas ejecutar
-          from institucionesService.factory import crear_instituciones_con_cursos
-
-          # Llama al método para crear las instituciones con cursos
-          crear_instituciones_con_cursos()
-          "
 
 - name: msd-instituciones-ms
   type: compute.v1.instance
@@ -402,6 +414,18 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/instituciones-service.git
           cd instituciones-service
           sudo pip install -r requirements.txt
+          sudo pip install django-cqrs
+          # cd ofipensiones
+          # python3 -c "
+          # import django
+          # django.setup()
+
+          # # Importa el método que deseas ejecutar
+          # from institucionesService.factory import crear_instituciones_con_cursos
+
+          # # Llama al método para crear las instituciones con cursos
+          # crear_instituciones_con_cursos()
+          # "
 
 - name: msd-cronogramas-ms
   type: compute.v1.instance
@@ -436,6 +460,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/cronogramas-service.git
           cd cronogramas-service
           sudo pip install -r requirements.txt
+          sudo pip install django-cqrs
 
 - name: msd-estudiantes-ms
   type: compute.v1.instance
@@ -470,6 +495,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/estudiantes-service.git
           cd estudiantes-service
           sudo pip install -r requirements.txt
+          sudo pip install django-cqrs
 
 - name: msd-usuarios-ms
   type: compute.v1.instance
@@ -504,6 +530,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/usuarios-service.git
           cd usuarios-service
           sudo pip install -r requirements.txt
+          sudo pip install django-cqrs
 
 - name: msd-batch-ms
   type: compute.v1.instance
@@ -570,13 +597,41 @@ resources:
         value: |
           #!/bin/bash
           sudo apt-get update
-          sudo apt install software-properties-common -y
-          sudo add-apt-repository ppa:deadsnakes/ppa -y
-          sudo apt-get update
-          sudo apt install python3.12 -y
-          sudo curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
-          sudo mkdir /home/labs
-          cd /home/labs
+          sudo apt install python3-pip -y
+          sudo mkdir /labs
+          cd /labs
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/reportes-service.git
           cd reportes-service
-          sudo python3.12 -m pip install -r requirements.txt
+          sudo pip install -r requirements.txt
+          sudo pip install django-cqrs
+
+- name: msd-rabbit-instance
+  type: compute.v1.instance
+  properties:
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.142.0.12
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - rabbit-instance
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d --hostname microservicios_user --name microservicios_user \
+                            -e RABBITMQ_DEFAULT_USER=microservicios_user \
+                            -e RABBITMQ_DEFAULT_PASS=password \
+                            -p 5672:5672 rabbitmq:3
