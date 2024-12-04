@@ -376,9 +376,11 @@ resources:
           cd facturacion-service
           sudo pip install -r requirements.txt
           sudo pip install pika
+          sudo pip install django
           cd ofipensiones
           python3 manage.py makemigrations
           python3 manage.py migrate
+          sudo pip install mongoengine
 
 
 - name: msd-instituciones-ms
@@ -415,6 +417,8 @@ resources:
           cd instituciones-service
           sudo pip install -r requirements.txt
           sudo pip install pika
+          sudo pip install django
+          sudo pip install mongoengine
           # cd ofipensiones
           # python3 -c "
           # import django
@@ -461,6 +465,8 @@ resources:
           cd cronogramas-service
           sudo pip install -r requirements.txt
           sudo pip install pika
+          sudo pip install django
+          sudo pip install mongoengine
 
 - name: msd-estudiantes-ms
   type: compute.v1.instance
@@ -496,6 +502,8 @@ resources:
           cd estudiantes-service
           sudo pip install -r requirements.txt
           sudo pip install pika
+          sudo pip install django
+          sudo pip install mongoengine
 
 - name: msd-usuarios-ms
   type: compute.v1.instance
@@ -531,6 +539,8 @@ resources:
           cd usuarios-service
           sudo pip install -r requirements.txt
           sudo pip install pika
+          sudo pip install django
+          sudo pip install mongoengine
 
 - name: msd-batch-ms
   type: compute.v1.instance
@@ -604,6 +614,8 @@ resources:
           cd reportes-service
           sudo pip install -r requirements.txt
           sudo pip install pika
+          sudo pip install django
+          sudo pip install mongoengine
           cd ofipensiones/queue
           sudo nohup python3 subscriber.py > subscriber.log 2>&1 &
 
