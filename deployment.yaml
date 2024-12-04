@@ -375,7 +375,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/facturacion-service.git
           cd facturacion-service
           sudo pip install -r requirements.txt
-          sudo pip install django-cqrs
+
           cd ofipensiones
           python3 manage.py makemigrations
           python3 manage.py migrate
@@ -414,7 +414,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/instituciones-service.git
           cd instituciones-service
           sudo pip install -r requirements.txt
-          sudo pip install django-cqrs
+
           # cd ofipensiones
           # python3 -c "
           # import django
@@ -460,7 +460,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/cronogramas-service.git
           cd cronogramas-service
           sudo pip install -r requirements.txt
-          sudo pip install django-cqrs
+
 
 - name: msd-estudiantes-ms
   type: compute.v1.instance
@@ -495,7 +495,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/estudiantes-service.git
           cd estudiantes-service
           sudo pip install -r requirements.txt
-          sudo pip install django-cqrs
+
 
 - name: msd-usuarios-ms
   type: compute.v1.instance
@@ -530,7 +530,7 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/usuarios-service.git
           cd usuarios-service
           sudo pip install -r requirements.txt
-          sudo pip install django-cqrs
+
 
 - name: msd-batch-ms
   type: compute.v1.instance
@@ -603,7 +603,10 @@ resources:
           sudo git clone https://github.com/ArquiSoft-Soluciones-Solidas-SAS/reportes-service.git
           cd reportes-service
           sudo pip install -r requirements.txt
-          sudo pip install django-cqrs
+
+          cd ofipensiones/queue
+          sudo nohup python3 subscriber.py > subscriber.log 2>&1 &
+
 
 - name: msd-rabbit-instance
   type: compute.v1.instance
