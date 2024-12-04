@@ -616,7 +616,7 @@ resources:
           sudo pip install pika
           sudo pip install django
           sudo pip install mongoengine
-          cd ofipensiones/queue
+          cd ofipensiones/rabbit-queue
           sudo nohup python3 subscriber.py > subscriber.log 2>&1 &
 
 
