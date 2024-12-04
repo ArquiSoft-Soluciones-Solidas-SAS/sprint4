@@ -341,6 +341,54 @@ resources:
                             -e MONGO_INITDB_ROOT_PASSWORD=password \
                             mongodb/mongodb-community-server
 
+- name: msd-redis-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/zones/us-east1-b/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/<id-proyecto>/global/networks/default
+      networkIP: 10.128.0.88
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-nosqldb
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          # Actualizar el sistema
+          sudo apt update -y && sudo apt upgrade -y
+
+          # Instalar Redis
+          sudo apt install redis-server -y
+
+          # Configurar Redis para aceptar conexiones externas
+          sudo sed -i 's/^bind .*/bind 0.0.0.0 ::1/' /etc/redis/redis.conf
+          sudo sed -i 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf
+
+          # Reiniciar el servicio Redis
+          sudo systemctl enable redis-server
+          sudo systemctl restart redis-server
+
+          # Confirmar que Redis está corriendo
+          if systemctl is-active --quiet redis-server; then
+              echo "Redis instalado y en ejecución correctamente."
+          else
+              echo "Error al iniciar Redis."
+              exit 1
+          fi
+
 # Service instances
 - name: msd-facturacion-ms
   type: compute.v1.instance
