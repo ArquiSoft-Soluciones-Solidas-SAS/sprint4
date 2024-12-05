@@ -1,4 +1,5 @@
 # Kong instance
+resources:
 - name: msd-kong-instance
   type: compute.v1.instance
   properties:
