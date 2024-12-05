@@ -62,6 +62,16 @@ services:
         paths:
           - /reportes
         strip_path: false
+
+    - name: reportes_auth_service
+    host: reportes_upstream
+    protocol: http
+    routes:
+      - name: reportes
+        paths:
+          - /login/auth0
+        preserve_host: true
+    
 upstreams:
   - name: facturacion_upstream
     targets:
