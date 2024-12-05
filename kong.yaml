@@ -65,7 +65,7 @@ services:
       - name: auth0
         paths:
           - /login/auth0
-        preserve_host: true
+        strip_path: false
 
 upstreams:
   - name: facturacion_upstream
