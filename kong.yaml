@@ -108,5 +108,5 @@ upstreams:
         weight: 100
   - name: reportes_auth_upstream
     targets:
-      - target: 35.188.169.78:8080
+      - target: 35.196.182.237:8080
         weight: 100
