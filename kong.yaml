@@ -66,6 +66,7 @@ services:
         paths:
           - /login/auth0
         strip_path: false
+        preserve_host: true
       - name: auth0_complete
         paths:
           - /complete/auth0
